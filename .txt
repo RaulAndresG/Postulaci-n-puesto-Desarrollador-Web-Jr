@@ -1,0 +1,26 @@
+Backend/
+│
+├──          
+├── src/                   
+│             
+│   ├── routes.js/          
+│   └── services.js             
+│
+├── config/                
+│   └── database.js        
+│
+├──node_modules/               
+├──.env          
+└──.gitignore        
+├── app.js/  
+├──package-lock.json             
+├──package.json            
+└──README.md 
+ ahora esta es mi estructura 
+
+
+
+
+
+
+
