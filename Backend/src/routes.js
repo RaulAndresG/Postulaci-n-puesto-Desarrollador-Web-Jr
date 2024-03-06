@@ -12,7 +12,7 @@ const historiasClinicasCollection = 'historias_clinicas';
 
 // Middleware para conectar a la base de datos
 const connectToDatabase = async () => {
-    const client = new MongoClient(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = new MongoClient(dbURI/* , { useNewUrlParser: true, useUnifiedTopology: true } */);
     await client.connect();
     return client.db(dbName);
 }
@@ -63,7 +63,7 @@ router.post('/historiasclinicas', async (req, res) => {
         const db = await connectToDatabase();
         const collection = db.collection(historiasClinicasCollection);
         const result = await collection.insertOne(req.body);
-        res.status(201).json({ message: "Historia clínica creada exitosamente", data: result.ops[0] });
+        res.status(201).json({ message: "Historia Clinica creado exitosamente", data: result.ops ? result.ops[0] : null });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al crear historia clínica" });
@@ -75,13 +75,14 @@ router.put('/pacientes/:id', async (req, res) => {
     try {
         const db = await connectToDatabase();
         const collection = db.collection(pacientesCollection);
-        const result = await collection.updateOne({ _id: ObjectId(req.params.id) }, { $set: req.body });
+        const result = await collection.updateOne({ _id: new ObjectId(req.params.id) }, { $set: req.body });
         res.json({ message: "Paciente actualizado exitosamente", data: result });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Error al actualizar paciente" });
     }
 });
+
 
 // Actualizar una historia clínica por su ID
 router.put('/historiasclinicas/:id', async (req, res) => {

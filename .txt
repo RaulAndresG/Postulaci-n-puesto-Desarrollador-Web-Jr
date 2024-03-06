@@ -22,5 +22,5 @@ Backend/
 
 
 
-
+Connection pool for ac-kwrc45h-shard-00-01.qvlh8ii.mongodb.net:27017 was cleared because another operation failed with: "32813562212160:error:10000438:SSL routines:OPENSSL_internal:TLSV1_ALERT_INTERNAL_ERROR:../../third_party/boringssl/src/ssl/tls_record.cc:592:SSL alert number 80 "
 
