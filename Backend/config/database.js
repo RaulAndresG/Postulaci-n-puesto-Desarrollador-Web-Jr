@@ -6,7 +6,7 @@ const dbName = process.env.DB_NAME;
 
 async function conectarMdb() {
     try {
-        const client = new MongoClient(MONGO_URI/* , { useNewUrlParser: true, useUnifiedTopology: true } */);
+        const client = new MongoClient(MONGO_URI /* , { useNewUrlParser: true, useUnifiedTopology: true }  */);
         await client.connect();
         console.log("MongoDB conectado");
         return client.db(dbName);
