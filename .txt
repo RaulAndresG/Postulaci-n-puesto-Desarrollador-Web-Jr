@@ -11,7 +11,6 @@ Backend/
 │
 ├──node_modules/               
 ├──.env          
-└──.gitignore        
 ├── app.js/  
 ├──package-lock.json             
 ├──package.json            
@@ -24,3 +23,68 @@ Backend/
 
 Connection pool for ac-kwrc45h-shard-00-01.qvlh8ii.mongodb.net:27017 was cleared because another operation failed with: "32813562212160:error:10000438:SSL routines:OPENSSL_internal:TLSV1_ALERT_INTERNAL_ERROR:../../third_party/boringssl/src/ssl/tls_record.cc:592:SSL alert number 80 "
 
+
+
+
+
+
+Configuración en Apache
+
+    Instalación de módulo proxy_http: Asegúrate de que el módulo proxy_http esté habilitado en tu servidor Apache. Puedes habilitarlo ejecutando el siguiente comando:
+
+    bash
+
+sudo a2enmod proxy_http
+
+Configuración del sitio virtual: Crea o edita el archivo de configuración del sitio virtual de tu aplicación en Apache. Puedes encontrar este archivo en la ruta /etc/apache2/sites-available/.
+
+apache
+
+<VirtualHost *:80>
+    ServerName tu-domino.com
+
+    ProxyPass / http://localhost:PUERTO/
+    ProxyPassReverse / http://localhost:PUERTO/
+</VirtualHost>
+
+Reemplaza tu-domino.com con tu nombre de dominio o dirección IP, y PUERTO con el puerto en el que está corriendo tu servidor Node.js.
+
+Habilitar el sitio virtual: Habilita el sitio virtual ejecutando el siguiente comando:
+
+bash
+
+sudo a2ensite nombre-del-sitio
+
+Reiniciar Apache: Reinicia Apache para aplicar los cambios:
+
+bash
+
+    sudo systemctl restart apache2
+
+Configuración en Nginx
+
+    Creación de un bloque de servidor: Edita el archivo de configuración de Nginx, generalmente ubicado en /etc/nginx/sites-available/default, y agrega un bloque de servidor para tu aplicación Node.js:
+
+    nginx
+
+server {
+    listen 80;
+    server_name tu-dominio.com;
+
+    location / {
+        proxy_pass http://localhost:PUERTO;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+Reemplaza tu-dominio.com con tu nombre de dominio o dirección IP, y PUERTO con el puerto en el que está corriendo tu servidor Node.js.
+
+Reiniciar Nginx: Reinicia Nginx para aplicar los cambios:
+
+bash
+
+sudo systemctl restart nginx
