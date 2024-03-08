@@ -11,6 +11,8 @@ const dbName = process.env.DB_NAME;
 const pacientesCollection = 'pacientes';
 const historiasClinicasCollection = 'historias_clinicas';
 
+
+
 // Middleware para conectar a la base de datos
 const connectToDatabase = async () => {
     const client = new MongoClient(dbURI/* , { useNewUrlParser: true, useUnifiedTopology: true } */);
@@ -152,5 +154,10 @@ router.delete('/historiasclinicas/:id', async (req, res) => {
         res.status(500).json({ error: "Error al eliminar historia clínica" });
     }
 });
+
+
+
+
+
 
 module.exports = router;

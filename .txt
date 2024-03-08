@@ -4,7 +4,6 @@ Backend/
 ├── src/                   
 │             
 │   ├── routes.js/          
-│   └── services.js             
 │
 ├── config/                
 │   └── database.js        
@@ -88,3 +87,55 @@ Reiniciar Nginx: Reinicia Nginx para aplicar los cambios:
 bash
 
 sudo systemctl restart nginx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Backend/
+│
+├── src/
+│   ├── controllers/
+│   │   ├── authController.js    // Controlador para la autenticación de usuarios
+│   │   ├── userController.js    // Controlador para la gestión de usuarios
+│   │   └── permisosController.js // Controlador para la gestión de permisos
+│   │
+│   ├── middleware/
+│   │   └── authMiddleware.js    // Middleware para verificar la autenticación de usuarios
+│   │
+│   ├── models/
+│   │   ├── User.js              // Modelo de usuario
+│   │   ├── Rol.js               // Modelo de rol
+│   │   └── Permiso.js           // Modelo de permiso
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js        // Rutas relacionadas con la autenticación
+│   │   ├── userRoutes.js        // Rutas relacionadas con la gestión de usuarios
+│   │   └── permisosRoutes.js    // Rutas relacionadas con la gestión de permisos
+│   │
+│   └── services/
+│       ├── authService.js       // Servicio para la autenticación
+│       ├── userService.js       // Servicio para la gestión de usuarios
+│       └── permisosService.js   // Servicio para la gestión de permisos
+│
+├── config/
+│   └── database.js              // Configuración de la conexión a la base de datos
+│
+├── node_modules/
+├── .env
+├── app.js
+├── package-lock.json
+├── package.json
+└── README.md
