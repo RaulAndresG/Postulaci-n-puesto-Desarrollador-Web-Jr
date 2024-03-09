@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom'; // Importa Redirect para la redirección
 import './Login.css';
+import imglogo from '../img/imglogo-removebg-preview.png';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -35,31 +36,39 @@ const Login = () => {
     }
 
     return (
+        <div class="background-container">
         <div className="login-container">
-            <h2>Iniciar sesión</h2>
-            <form onSubmit={handleSubmit}>
+        <img class="login-image" src={imglogo} alt="Logo"></img>
+           <h2 class="login-title"></h2>
+            <form class="login-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="username">Nombre de usuario:</label>
+                    <label htmlFor="username">Username:</label>
                     <input
                         type="text"
                         id="username"
                         value={username}
+                        placeholder="Enter your username"
                         onChange={(e) => setUsername(e.target.value)}
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password">Contraseña:</label>
+                    <label htmlFor="password">Password:</label>
                     <input
                         type="password"
                         id="password"
                         value={password}
+                        placeholder="Enter your password"
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 {error && <p className="error-message">{error}</p>}
-                <button type="submit">Iniciar sesión</button>
+                <button class="login-button" type="submit">Log In</button>
             </form>
         </div>
+        </div>
+
+
+
     );
 };
 

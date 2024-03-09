@@ -64,7 +64,7 @@ const ConsultasList = () => {
         const lineHeight = 7;
         const pageHeight = doc.internal.pageSize.height;
         let y = 10;
-    
+
         consultas.forEach((consulta, index) => {
             const data = [
                 `Paciente ID: ${consulta.paciente_id}`,
@@ -74,125 +74,134 @@ const ConsultasList = () => {
                 `Diagnóstico: ${consulta.diagnostico}`,
                 `Tratamiento: ${consulta.tratamiento}`,
             ];
-    
+
             if (y + lineHeight * (data.length + 1) > pageHeight) {
-                doc.addPage(); 
-                y = 10; 
+                doc.addPage();
+                y = 10;
             }
-    
+
             doc.text(10, y, `Consulta ${index + 1}:`);
             data.forEach(line => {
                 y += lineHeight;
                 doc.text(20, y, line);
             });
-            y += lineHeight * (data.length + 1); 
+            y += lineHeight * (data.length + 1);
         });
-    
+
         doc.save('historias_clinicas.pdf');
     };
-    
+
 
     return (
-      <div className="consultas-container"> 
-          <h2 className="consultas-title">Listado de Consultas</h2> 
-          <button className="crear-consulta" onClick={handleCreateConsulta}>Crear Consulta</button>
-          <button  className="generar-pdf crear-consulta " onClick={handleGeneratePDF}>Generar PDF</button>
-          {showModal && (
-              <div className="modal">
-                  <div className="modal-content">
-                      <span className="close"  onClick={handleCloseModal}>&times;</span>
-                      <h2>Crear Nueva Consulta</h2>
-                      <form onSubmit={handleSubmit}>
-                          <div className="form-group">
-                              <label htmlFor="paciente_id">Paciente ID:</label>
-                              <input
-                                  type="text"
-                                  id="paciente_id"
-                                  name="paciente_id"
-                                  value={consultaData.paciente_id}
-                                  onChange={handleChange}
-                              />
-                          </div>
-                          <div className="form-group">
-                              <label htmlFor="fecha_hora"> Fecha_hora:</label>
-                              <input
-                                  type="text"
-                                  id="fecha_hora"
-                                  name="fecha_hora"
-                                  value={consultaData.fecha_hora}
-                                  onChange={handleChange}
-                              />
-                          </div>
-                          <div className="form-group">
-                              <label htmlFor="motivo_consulta">Motivo de Consulta:</label>
-                              <input
-                                  type="text"
-                                  id="motivo_consulta"
-                                  name="motivo_consulta"
-                                  value={consultaData.motivo_consulta}
-                                  onChange={handleChange}
-                              />
-                          </div>
-                          <div className="form-group">
-                              <label htmlFor="sintomas">Síntomas:</label>
-                              <input
-                                  type="text"
-                                  id="sintomas"
-                                  name="sintomas"
-                                  value={consultaData.sintomas}
-                                  onChange={handleChange}
-                              />
-                          </div>
-                          <div className="form-group">
-                              <label htmlFor="diagnostico">Diagnóstico:</label>
-                              <input
-                                  type="text"
-                                  id="diagnostico"
-                                  name="diagnostico"
-                                  value={consultaData.diagnostico}
-                                  onChange={handleChange}
-                              />
-                          </div>
-                          <div className="form-group">
-                              <label htmlFor="tratamiento">Tratamiento:</label>
-                              <input
-                                  type="text"
-                                  id="tratamiento"
-                                  name="tratamiento"
-                                  value={consultaData.tratamiento}
-                                  onChange={handleChange}
-                              />
-                          </div>
-                          <div className="form-group">
+        <div className="consultas-container">
+            <h2 className="consultas-title">Listado de Consultas</h2>
+            <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
+                <button className="crear-consulta" onClick={handleCreateConsulta}>Crear Consulta</button>
+                <button className="generar-pdf" onClick={handleGeneratePDF}>Generar PDF</button>
+            </div>
+            {showModal && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <span className="close" onClick={handleCloseModal}>&times;</span>
+                        <h2>Crear Nueva Consulta</h2>
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="paciente_id">Paciente ID:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="paciente_id"
+                                    name="paciente_id"
+                                    value={consultaData.paciente_id}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="fecha_hora"> Fecha_hora:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="fecha_hora"
+                                    name="fecha_hora"
+                                    value={consultaData.fecha_hora}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="motivo_consulta">Motivo de Consulta:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="motivo_consulta"
+                                    name="motivo_consulta"
+                                    value={consultaData.motivo_consulta}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="sintomas">Síntomas:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="sintomas"
+                                    name="sintomas"
+                                    value={consultaData.sintomas}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="diagnostico">Diagnóstico:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="diagnostico"
+                                    name="diagnostico"
+                                    value={consultaData.diagnostico}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="tratamiento">Tratamiento:</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="tratamiento"
+                                    name="tratamiento"
+                                    value={consultaData.tratamiento}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-group">
                                 <label htmlFor="informacion_laboratorio">Información del Laboratorio:</label>
                                 <textarea
+                                    required
                                     id="informacion_laboratorio"
                                     name="informacion_laboratorio"
                                     value={consultaData.informacion_laboratorio}
                                     onChange={handleChange}
                                 />
                             </div>
-                          <button className="boton" type="submit">Crear Consulta</button>
-                      </form>
-                  </div>
-              </div>
-          )}
-          <ul>
-              {consultas.map(consulta => (
-                  <li key={consulta._id.$oid} className="consulta-card">
-                      <p>Paciente ID: {consulta.paciente_id}</p>
-                      <p>Fecha y Hora: {new Date(consulta.fecha_hora).toLocaleString()}</p>
-                      <p>Motivo de consulta: {consulta.motivo_consulta}</p>
-                      <p>Síntomas: {consulta.sintomas}</p>
-                      <p>Diagnóstico: {consulta.diagnostico}</p>
-                      <p>Tratamiento: {consulta.tratamiento}</p>
-                      <p>Información del Laboratorio: {consulta.informacion_laboratorio}</p> {/* Mostrar la información del laboratorio */}
-                      <hr />
-                  </li>
-              ))}
-          </ul>
-      </div>
-  );
+                            <button className="boton" type="submit">Crear Consulta</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+            <ul>
+                {consultas.map(consulta => (
+                    <li key={consulta._id.$oid} className="consulta-card">
+                        <p>Paciente ID: {consulta.paciente_id}</p>
+                        <p>Fecha y Hora: {new Date(consulta.fecha_hora).toLocaleString()}</p>
+                        <p>Motivo de consulta: {consulta.motivo_consulta}</p>
+                        <p>Síntomas: {consulta.sintomas}</p>
+                        <p>Diagnóstico: {consulta.diagnostico}</p>
+                        <p>Tratamiento: {consulta.tratamiento}</p>
+                        <p>Información del Laboratorio: {consulta.informacion_laboratorio}</p> {/* Mostrar la información del laboratorio */}
+                        <hr />
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default ConsultasList;

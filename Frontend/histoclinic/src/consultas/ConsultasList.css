@@ -1,25 +1,21 @@
-body{
-background-color: #000000b0;
-}
-
 .consultas-container {
-    max-width: 1200px;
+    max-width: 1810px;
     margin: 0 auto;
-    background-color: rgba(0, 0, 0, 0.1); 
-    padding: 20px; 
+    padding: 50px; 
     position: relative; 
 }
 
 .consultas-title {
     text-align: center;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
+    font-family: monospace;
     margin-bottom: 20px;
-    color: #2b2525;
+    color: #020f53b4;
 }
 
 .consulta-card {
-    background-color: #f6f6f6ab;
+    background-color: #ffffffb9;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
@@ -30,29 +26,42 @@ background-color: #000000b0;
     min-width: 200px;
     max-width: 250px;
     height: 250px;
-    border: 1px solid black;
+    border: 2px solid rgb(255, 255, 255);
     display: inline-block;
     vertical-align: top;
     justify-content: space-around;
     flex-direction: row;
 }
 
-
 .crear-consulta {
-    display: block;
-    margin: 0 auto;
     margin-top: 5px;
-    padding: 10px 20px;
+    padding: 10px 17px;
     font-size: 16px;
-    background-color: rgba(85, 84, 86, 0.576); 
-    color: #000000; 
+    background-color: #0a35649c;
+    color: #ffffff; 
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 1s ease;
 }
+
 .crear-consulta:hover {
-    background-color: #757272; 
+    background-color: #0056b3; 
+}
+
+.generar-pdf{
+    margin-top: 5px;
+    padding: 10px 17px;
+    font-size: 16px;
+    background-color: #0a35649c;
+    color: #ffffff; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 1s ease;
+}
+.generar-pdf:hover {
+    background-color: #0056b3; 
 }
 
 .consulta-card p {
@@ -66,18 +75,18 @@ background-color: #000000b0;
     font-family: Arial, sans-serif;
 }
 
-
 .consultas-container::before {
-    content: '';
+    content: '';/*  */
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('./alquiler-consulta-medica-malaga-clinica-muelle-heredia.jpg');  
-    /* background-size: cover; */
-    background-position: center;
-    background-repeat: no-repeat;
+    width: 115rem;
+    height: 56.5rem;
+    background-image: url('../img/imgconsultas.jpeg');  
+    background-size: cover;  
+    background-position: center; 
+    /*  background-repeat: no-repeat; */
     opacity: 1; 
     z-index: -1; 
+    filter: blur(9.1px); 
 }
