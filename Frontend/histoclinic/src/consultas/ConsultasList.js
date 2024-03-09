@@ -60,30 +60,37 @@ const ConsultasList = () => {
 
 
     const handleGeneratePDF = () => {
-      const doc = new jsPDF();
-      const lineHeight = 7;
-      let y = 10;
-
-      consultas.forEach((consulta, index) => {
-          const data = [
-              `Paciente ID: ${consulta.paciente_id}`,
-              `Fecha y Hora: ${new Date(consulta.fecha_hora).toLocaleString()}`,
-              `Motivo de Consulta: ${consulta.motivo_consulta}`,
-              `Síntomas: ${consulta.sintomas}`,
-              `Diagnóstico: ${consulta.diagnostico}`,
-              `Tratamiento: ${consulta.tratamiento}`,
-          ];
-          
-          doc.text(10, y, `Consulta ${index + 1}:`);
-          data.forEach(line => {
-              y += lineHeight;
-              doc.text(20, y, line);
-          });
-          y += lineHeight;
-      });
-
-      doc.save('historias_clinicas.pdf');
-  };
+        const doc = new jsPDF();
+        const lineHeight = 7;
+        const pageHeight = doc.internal.pageSize.height;
+        let y = 10;
+    
+        consultas.forEach((consulta, index) => {
+            const data = [
+                `Paciente ID: ${consulta.paciente_id}`,
+                `Fecha y Hora: ${new Date(consulta.fecha_hora).toLocaleString()}`,
+                `Motivo de Consulta: ${consulta.motivo_consulta}`,
+                `Síntomas: ${consulta.sintomas}`,
+                `Diagnóstico: ${consulta.diagnostico}`,
+                `Tratamiento: ${consulta.tratamiento}`,
+            ];
+    
+            if (y + lineHeight * (data.length + 1) > pageHeight) {
+                doc.addPage(); 
+                y = 10; 
+            }
+    
+            doc.text(10, y, `Consulta ${index + 1}:`);
+            data.forEach(line => {
+                y += lineHeight;
+                doc.text(20, y, line);
+            });
+            y += lineHeight * (data.length + 1); 
+        });
+    
+        doc.save('historias_clinicas.pdf');
+    };
+    
 
     return (
       <div className="consultas-container"> 
