@@ -2,7 +2,10 @@ require('dotenv').config();
 
 const express = require('express');
 const conectarMdb = require('./Backend/config/database.js');
-const authRoutes = require('./Backend/src/routes/authRoutes.js');
+const routes = require('./Backend/src/routes.js');
+const logRoutes = require('./Backend/src/routes/authRoutes.js');
+const outRoutes = require('./Backend/src/routes/authRoutes.js');
+
 const cors = require('cors');
 
 const app = express();
@@ -15,7 +18,10 @@ app.use(express.static('public'));
 app.use(cors());
 
 // Rutas de autenticación
-app.use('/SoliAut', authRoutes);
+app.use('/api', routes);
+app.use('/SoliLog', logRoutes);
+app.use('/SoliOut', outRoutes);
+
 
 // Manejador de rutas no encontradas
 app.use((req, res, next) => {

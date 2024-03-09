@@ -1,0 +1,83 @@
+body{
+background-color: #000000b0;
+}
+
+.consultas-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.1); 
+    padding: 20px; 
+    position: relative; 
+}
+
+.consultas-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #2b2525;
+}
+
+.consulta-card {
+    background-color: #f6f6f6ab;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+    box-shadow: 0px 0px 10px rgba(54, 49, 57, 0.657);
+    width: calc(25% - 40px);
+    min-width: 200px;
+    max-width: 250px;
+    height: 250px;
+    border: 1px solid black;
+    display: inline-block;
+    vertical-align: top;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+
+.crear-consulta {
+    display: block;
+    margin: 0 auto;
+    margin-top: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: rgba(85, 84, 86, 0.576); 
+    color: #000000; 
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 1s ease;
+}
+.crear-consulta:hover {
+    background-color: #757272; 
+}
+
+.consulta-card p {
+    margin: 5px 0;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+}
+
+.consulta-card h3 {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+.consultas-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./alquiler-consulta-medica-malaga-clinica-muelle-heredia.jpg');  
+    /* background-size: cover; */
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1; 
+    z-index: -1; 
+}

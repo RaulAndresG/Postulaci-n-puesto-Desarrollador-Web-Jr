@@ -2,7 +2,8 @@ Backend/
 │
 ├──          
 ├── src/                   
-│             
+│   ├── routes   
+        └── authRoutes.js    
 │   ├── routes.js/          
 │
 ├── config/                
@@ -139,3 +140,50 @@ Backend/
 ├── package-lock.json
 ├── package.json
 └── README.md
+
+
+
+
+
+Proyecto/
+│
+├── Backend/
+│   ├── src/                   
+│   │   ├── routes/               // Rutas de la API
+│   │   │   └── authRoutes.js     // Rutas de autenticación
+│   │   ├── controllers/          // Controladores de la lógica de negocio
+│   │   ├── models/               // Modelos de datos
+│   │   ├── services/             // Servicios para operaciones específicas
+│   │   ├── config/               // Configuraciones del proyecto
+│   │   │   └── database.js       // Configuración de la base de datos
+│   │   ├── middleware/           // Middlewares para la API
+│   │   ├── utils/                // Utilidades y funciones auxiliares
+│   │   └── app.js                // Archivo principal de la aplicación
+│   │
+│   ├── node_modules/             // Dependencias del backend
+│   ├── .env                      // Archivo de configuración de variables de entorno
+│   ├── package-lock.json         // Registro exacto de las dependencias instaladas
+│   ├── package.json              // Información sobre el proyecto y las dependencias
+│   └── README.md                 // Documentación del proyecto
+│
+├── Frontend/                     // Carpeta del frontend de React
+│   ├── public/                   // Archivos estáticos del frontend
+│   │   ├── index.html            // Página principal HTML
+│   │   └── ...                   // Otros archivos estáticos (imágenes, íconos, etc.)
+│   │
+│   ├── src/                      // Archivos fuente del frontend
+│   │   ├── components/           // Componentes de React reutilizables
+│   │   ├── pages/                // Páginas principales de la aplicación
+│   │   ├── services/             // Servicios para hacer llamadas a la API backend
+│   │   ├── utils/                // Utilidades y funciones auxiliares del frontend
+│   │   ├── App.js                // Componente principal de la aplicación React
+│   │   ├── index.js              // Archivo de entrada de la aplicación React
+│   │   └── ...
+│   │
+│   ├── node_modules/             // Dependencias del frontend
+│   ├── .env                      // Archivo de configuración de variables de entorno específicas del frontend
+│   ├── package-lock.json         // Registro exacto de las dependencias instaladas en el frontend
+│   ├── package.json              // Información sobre el proyecto del frontend y las dependencias
+│   └── README.md                 // Documentación del frontend
+│
+└── .gitignore    

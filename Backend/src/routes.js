@@ -114,7 +114,6 @@ router.post('/historiasclinicas/serial', async (req, res) => {
     try {
         const pacienteId = req.body.paciente_id;
         const subserial = await generarSubserial(pacienteId);
-        // Agregar el subserial a los datos de la historia clínica antes de guardarla en la base de datos
         req.body.subserial = subserial;
         const db = await conectarMdb();
         if (!db) {
