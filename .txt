@@ -93,7 +93,38 @@ sudo systemctl restart nginx
 
 
 
-
+ const data = [
+                    { label: 'Cedula:', value: consulta.paciente_id },
+                    { label: 'Fecha y Hora:', value: new Date(consulta.fecha_hora).toLocaleString() },
+                    { label: 'Motivo de Consulta:', value: consulta.motivo_consulta },
+                    { label: 'Síntomas:', value: consulta.sintomas },
+                    { label: 'Diagnóstico:', value: consulta.diagnostico },
+                    { label: 'Tratamiento:', value: consulta.tratamiento },
+                ];
+    
+                let consultaY = pageHeight / 3;
+    
+                doc.setLineWidth(0.5);
+                doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+    
+                doc.line(10, pageHeight / 5, pageWidth - 10, pageHeight / 5);
+                doc.line(10, pageHeight / 12, pageWidth - 10, pageHeight / 12);
+    
+                doc.setFontSize(16);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Historia Clínica ${index + 1}`, pageWidth / 2, 30, { align: 'center' });
+    
+                doc.setFontSize(12); // Restaurar tamaño de letra normal
+                data.forEach(({ label, value }, i) => {
+                    doc.setFont('helvetica', 'bold');
+                    if (i === 0) {
+                        doc.text(label, pageWidth / 2, consultaY + lineHeight * i + 10, { align: 'center' });
+                    } else {
+                        doc.setFont('helvetica', 'normal');
+                        doc.text(label, pageWidth / 2, consultaY + lineHeight * i + 10, { align: 'center' });
+                    }
+                    doc.text(value, pageWidth / 2, consultaY + lineHeight * i + 15, { align: 'center' });
+                });
 
 
 

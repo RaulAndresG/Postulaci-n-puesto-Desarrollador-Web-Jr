@@ -2,18 +2,25 @@ import React, { useState, useEffect } from 'react';
 import './ConsultasList.css';
 import '../Modal/Modal.css';
 import jsPDF from 'jspdf';
+import logoImg from '../img/pngwing.jpeg';
 
 const ConsultasList = () => {
     const [consultas, setConsultas] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [consultaData, setConsultaData] = useState({
-        paciente_id: '',
+        Cedula: '',
         fecha_hora: '',
         motivo_consulta: '',
         sintomas: '',
         diagnostico: '',
         tratamiento: '',
-        informacion_laboratorio: '',
+        informacion_laboratorio: [
+            ["", "", "", "", ""], 
+            ["", "", "", "", ""], 
+            ["", "", "", "", ""],
+            ["", "", "", "", ""],
+            ["", "", "", "", ""]
+        ]
     });
 
     useEffect(() => {
@@ -22,6 +29,15 @@ const ConsultasList = () => {
             .then(data => setConsultas(data))
             .catch(error => console.error('Error al obtener las consultas:', error));
     }, []);
+
+    const handleLabDataChange = (e, rowIndex, colIndex) => {
+        const { value } = e.target;
+        setConsultaData(prevConsultaData => {
+            const updatedLabData = [...prevConsultaData.informacion_laboratorio];
+            updatedLabData[rowIndex][colIndex] = value;
+            return { ...prevConsultaData, informacion_laboratorio: updatedLabData };
+        });
+    };
 
     const handleCreateConsulta = () => {
         setShowModal(true);
@@ -58,43 +74,92 @@ const ConsultasList = () => {
         }
     };
 
+/*     const logoWidth = 40; 
+    const logoHeight = (logo.width * logoWidth) / logo.height; 
+    const logoX = pageWidth - logoWidth - 10; 
+    const logoY = 247; */
 
     const handleGeneratePDF = () => {
         const doc = new jsPDF();
         const lineHeight = 7;
         const pageHeight = doc.internal.pageSize.height;
-        let y = 10;
-
-        consultas.forEach((consulta, index) => {
-            const data = [
-                `Paciente ID: ${consulta.paciente_id}`,
-                `Fecha y Hora: ${new Date(consulta.fecha_hora).toLocaleString()}`,
-                `Motivo de Consulta: ${consulta.motivo_consulta}`,
-                `Síntomas: ${consulta.sintomas}`,
-                `Diagnóstico: ${consulta.diagnostico}`,
-                `Tratamiento: ${consulta.tratamiento}`,
-            ];
-
-            if (y + lineHeight * (data.length + 1) > pageHeight) {
-                doc.addPage();
-                y = 10;
-            }
-
-            doc.text(10, y, `Consulta ${index + 1}:`);
-            data.forEach(line => {
-                y += lineHeight;
-                doc.text(20, y, line);
+        const pageWidth = doc.internal.pageSize.width;
+        const logo = new Image();
+          
+        /* logo.onerror = function() {
+            console.error('Error al cargar la imagen del logo.');
+          }; */
+    
+        doc.setFontSize();
+        doc.text('Historias Clínicas', pageWidth / 2, 20, { align: 'center', color: 'blue' });
+        logo.onload = function() {
+            consultas.forEach((consulta, index) => {
+                if (index > 0) {
+                    doc.addPage();
+                }
+    
+                const data = [
+                    { label: 'Cedula:', value: consultaData.paciente_id },
+                    { label: 'Fecha y Hora:', value: consultaData.fecha_hora },
+                    { label: 'Motivo de Consulta:', value: consultaData.motivo_consulta },
+                    { label: 'Síntomas:', value: consultaData.sintomas },
+                    { label: 'Diagnóstico:', value: consultaData.diagnostico },
+                    { label: 'Tratamiento:', value: consultaData.tratamiento },
+                    { label: 'Informacion Laboratorio:', value: consultaData.labData.map(row => row.join(', ')) },
+                ];
+    
+                let consultaY = pageHeight / 3;
+    
+                doc.setLineWidth(0.5);
+                doc.rect(10, 10, pageWidth - 20, pageHeight - 20); 
+                doc.line(10, pageHeight / 5, pageWidth - 10, pageHeight / 5); 
+                doc.line(10, pageHeight / 12, pageWidth - 10, pageHeight / 12); 
+    
+                doc.setFontSize(15);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`Historia Clínica ${index + 1}`, pageWidth / 2, 30, { align: 'center' });
+    
+                data.forEach(({ label, value }, i) => {
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(label, 20, consultaY); 
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(value, 50, consultaY); 
+                    consultaY += lineHeight; 
+                });
+    
+                const logoWidth = 40; 
+                const logoHeight = (logo.width * logoWidth) / logo.height; 
+                const logoX = pageWidth - logoWidth - 10; 
+                const logoY = 247;
+                doc.addImage(logo, 'JPEG', logoX, logoY, logoWidth, logoHeight);
             });
-            y += lineHeight * (data.length + 1);
-        });
-
-        doc.save('historias_clinicas.pdf');
+    
+            doc.save('historias_clinicas.pdf');
+        };
+    
+        logo.onerror = function() {
+            console.error('Error al cargar la imagen del logo.');
+        };
+    
+        logo.src = logoImg;
     };
+    
+
+    
+    
+    
+  /*   export default handleGeneratePDF; */
+    
+    
+    
+    
 
 
     return (
         <div className="consultas-container">
             <h2 className="consultas-title">Listado de Consultas</h2>
+            <div className="table-container">
+         </div>
             <div style={{display: "flex", flexDirection: "row", gap: "1rem"}}>
                 <button className="crear-consulta" onClick={handleCreateConsulta}>Crear Consulta</button>
                 <button className="generar-pdf" onClick={handleGeneratePDF}>Generar PDF</button>
@@ -106,7 +171,7 @@ const ConsultasList = () => {
                         <h2>Crear Nueva Consulta</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="paciente_id">Paciente ID:</label>
+                                <label htmlFor="paciente_id">Cedula</label>
                                 <input
                                     required
                                     type="text"
@@ -172,15 +237,34 @@ const ConsultasList = () => {
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="informacion_laboratorio">Información del Laboratorio:</label>
-                                <textarea
-                                    required
-                                    id="informacion_laboratorio"
-                                    name="informacion_laboratorio"
-                                    value={consultaData.informacion_laboratorio}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                            <label htmlFor="informacion_laboratorio">Información del Laboratorio:</label>
+                               <table>
+                                   <thead>
+                                       <tr>
+                                           <th>A</th>
+                                           <th>B</th>
+                                           <th>C</th>
+                                           <th>D</th>
+                                           <th>E</th>
+                                       </tr>
+                                   </thead>
+                                   <tbody>
+                                       {[...Array(5)].map((_, rowIndex) => (
+                                           <tr key={rowIndex}>
+                                               {[...Array(5)].map((_, colIndex) => (
+                                                   <td key={colIndex}>
+                                                       <input
+                                                           type="text"
+                                                           value={consultaData.labData[rowIndex][colIndex]}
+                                                           onChange={(e) => handleLabDataChange(e, rowIndex, colIndex)}
+                                                       />
+                                                   </td>
+                                               ))}
+                                           </tr>
+                                       ))}
+                                   </tbody>
+                               </table>
+                                   </div>
                             <button className="boton" type="submit">Crear Consulta</button>
                         </form>
                     </div>
@@ -189,7 +273,7 @@ const ConsultasList = () => {
             <ul>
                 {consultas.map(consulta => (
                     <li key={consulta._id.$oid} className="consulta-card">
-                        <p>Paciente ID: {consulta.paciente_id}</p>
+                        <p>Cedula: {consulta.paciente_id}</p>
                         <p>Fecha y Hora: {new Date(consulta.fecha_hora).toLocaleString()}</p>
                         <p>Motivo de consulta: {consulta.motivo_consulta}</p>
                         <p>Síntomas: {consulta.sintomas}</p>
