@@ -8,7 +8,7 @@ const ConsultasList = () => {
     const [consultas, setConsultas] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [consultaData, setConsultaData] = useState({
-        Cedula: '',
+        paciente_id: '', 
         fecha_hora: '',
         motivo_consulta: '',
         sintomas: '',
@@ -74,62 +74,105 @@ const ConsultasList = () => {
         }
     };
 
-/*     const logoWidth = 40; 
-    const logoHeight = (logo.width * logoWidth) / logo.height; 
-    const logoX = pageWidth - logoWidth - 10; 
-    const logoY = 247; */
-
-    const handleGeneratePDF = () => {
+   const handleGeneratePDF = () => {
         const doc = new jsPDF();
         const lineHeight = 7;
         const pageHeight = doc.internal.pageSize.height;
         const pageWidth = doc.internal.pageSize.width;
         const logo = new Image();
-          
-        /* logo.onerror = function() {
-            console.error('Error al cargar la imagen del logo.');
-          }; */
     
-        doc.setFontSize();
-        doc.text('Historias Clínicas', pageWidth / 2, 20, { align: 'center', color: 'blue' });
         logo.onload = function() {
             consultas.forEach((consulta, index) => {
                 if (index > 0) {
                     doc.addPage();
                 }
+                let consultaY = 30;
+                doc.setDrawColor(0); // Color del borde
+                doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+                doc.setFillColor(192, 192, 192); // Color gris
+                doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                doc.setFontSize(12);
+                doc.setTextColor(0, 0, 0); // Color negro
+                doc.setFont('helvetica', 'bold');
+                doc.text('Cedula', 20, consultaY + lineHeight / 2);
+                consultaY += lineHeight;
+                doc.setFillColor(255, 255, 255); // Color blanco
+                doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                doc.setFont('helvetica', 'normal');
+                doc.text(consulta.paciente_id, 20, consultaY + lineHeight / 2);
     
-                const data = [
-                    { label: 'Cedula:', value: consultaData.paciente_id },
-                    { label: 'Fecha y Hora:', value: consultaData.fecha_hora },
-                    { label: 'Motivo de Consulta:', value: consultaData.motivo_consulta },
-                    { label: 'Síntomas:', value: consultaData.sintomas },
-                    { label: 'Diagnóstico:', value: consultaData.diagnostico },
-                    { label: 'Tratamiento:', value: consultaData.tratamiento },
-                    { label: 'Informacion Laboratorio:', value: consultaData.labData.map(row => row.join(', ')) },
+    
+                let data = [
+                    { label: 'Fecha y Hora:', value: new Date(consulta.fecha_hora).toLocaleString() },
+                    { label: 'Motivo de Consulta:', value: consulta.motivo_consulta },
+                    { label: 'Síntomas:', value: consulta.sintomas },
+                    { label: 'Diagnóstico:', value: consulta.diagnostico },
+                    { label: 'Tratamiento:', value: consulta.tratamiento },
                 ];
+
+
+                data.forEach(item => {
+                    consultaY += lineHeight;
+                    doc.setFillColor(192, 192, 192); // Color gris
+                    doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                    doc.setFont('helvetica', 'bold');
+                    doc.text(item.label, 20, consultaY + lineHeight / 2);
+                });
     
-                let consultaY = pageHeight / 3;
+                // Contenido de las tablas secundarias
+                data.forEach(item => {
+                    consultaY += lineHeight;
+                    doc.setFillColor(255, 255, 255); // Color blanco
+                    doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                    doc.setFont('helvetica', 'normal');
+                    doc.text(item.value, 20, consultaY + lineHeight / 2);
+                });
+    
+
+
+
+    
+              /*   let consultaY = pageHeight / 3; */
     
                 doc.setLineWidth(0.5);
-                doc.rect(10, 10, pageWidth - 20, pageHeight - 20); 
-                doc.line(10, pageHeight / 5, pageWidth - 10, pageHeight / 5); 
-                doc.line(10, pageHeight / 12, pageWidth - 10, pageHeight / 12); 
+                doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+                doc.line(10, pageHeight / 6, pageWidth - 10, pageHeight / 6);
+                doc.line(10, pageHeight / 10, pageWidth - 10, pageHeight / 10);
     
                 doc.setFontSize(15);
                 doc.setFont('helvetica', 'bold');
                 doc.text(`Historia Clínica ${index + 1}`, pageWidth / 2, 30, { align: 'center' });
     
-                data.forEach(({ label, value }, i) => {
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(label, 20, consultaY); 
+              /*   data.forEach((item, i) => {
                     doc.setFont('helvetica', 'normal');
-                    doc.text(value, 50, consultaY); 
-                    consultaY += lineHeight; 
+                    const textWidth = doc.getStringUnitWidth(`${item.label} ${item.value}`) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                    const xPosition = (pageWidth - textWidth) / 2;
+                    doc.text(`${item.label} ${item.value}`, xPosition, consultaY);
+                    consultaY += lineHeight;
                 });
+ */
+                // Información del laboratorio
+                
+                if (Array.isArray(consulta.informacion_laboratorio)) {
+                    let infoLabY = consultaY;
+                    doc.setFont('helvetica', 'bold');
+                    doc.text('Información del Laboratorio:', 15, infoLabY);
+                    infoLabY += lineHeight;
+                    consulta.informacion_laboratorio.forEach((fila, filaIndex) => {
+                        const filaNumero = filaIndex + 1;
+                        fila.forEach((columna, columnIndex) => {
+                            doc.setFont('helvetica', 'normal');
+                            const textWidth = doc.getStringUnitWidth(`${filaNumero}.${columna}`) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                            const xPosition = 20 + (columnIndex * 30); // Ajusta según necesites
+                            doc.text(`${filaNumero}.${columna}`, xPosition, infoLabY, );
+                        });
+                        infoLabY += lineHeight;
+                    });
+                }
     
-                const logoWidth = 40; 
-                const logoHeight = (logo.width * logoWidth) / logo.height; 
-                const logoX = pageWidth - logoWidth - 10; 
+                const logoWidth = 40;
+                const logoHeight = (logo.width * logoWidth) / logo.height;
+                const logoX = pageWidth - logoWidth - 10;
                 const logoY = 247;
                 doc.addImage(logo, 'JPEG', logoX, logoY, logoWidth, logoHeight);
             });
@@ -144,16 +187,9 @@ const ConsultasList = () => {
         logo.src = logoImg;
     };
     
-
     
     
     
-  /*   export default handleGeneratePDF; */
-    
-    
-    
-    
-
 
     return (
         <div className="consultas-container">
@@ -173,6 +209,7 @@ const ConsultasList = () => {
                             <div className="form-group">
                                 <label htmlFor="paciente_id">Cedula</label>
                                 <input
+                                className='input1'
                                     required
                                     type="text"
                                     id="paciente_id"
@@ -184,6 +221,7 @@ const ConsultasList = () => {
                             <div className="form-group">
                                 <label htmlFor="fecha_hora"> Fecha_hora:</label>
                                 <input
+                                className='input1'
                                     required
                                     type="text"
                                     id="fecha_hora"
@@ -195,6 +233,7 @@ const ConsultasList = () => {
                             <div className="form-group">
                                 <label htmlFor="motivo_consulta">Motivo de Consulta:</label>
                                 <input
+                                className='input1'
                                     required
                                     type="text"
                                     id="motivo_consulta"
@@ -206,6 +245,7 @@ const ConsultasList = () => {
                             <div className="form-group">
                                 <label htmlFor="sintomas">Síntomas:</label>
                                 <input
+                                className='input1'
                                     required
                                     type="text"
                                     id="sintomas"
@@ -217,6 +257,7 @@ const ConsultasList = () => {
                             <div className="form-group">
                                 <label htmlFor="diagnostico">Diagnóstico:</label>
                                 <input
+                                className='input1'
                                     required
                                     type="text"
                                     id="diagnostico"
@@ -228,6 +269,7 @@ const ConsultasList = () => {
                             <div className="form-group">
                                 <label htmlFor="tratamiento">Tratamiento:</label>
                                 <input
+                                className='input1'
                                     required
                                     type="text"
                                     id="tratamiento"
@@ -241,21 +283,25 @@ const ConsultasList = () => {
                                <table>
                                    <thead>
                                        <tr>
+                                           <th></th>
                                            <th>A</th>
                                            <th>B</th>
                                            <th>C</th>
                                            <th>D</th>
                                            <th>E</th>
+
                                        </tr>
                                    </thead>
                                    <tbody>
                                        {[...Array(5)].map((_, rowIndex) => (
                                            <tr key={rowIndex}>
+                                             <td>{rowIndex + 1}</td>
                                                {[...Array(5)].map((_, colIndex) => (
                                                    <td key={colIndex}>
                                                        <input
+                                                           className='input2 '
                                                            type="text"
-                                                           value={consultaData.labData[rowIndex][colIndex]}
+                                                           value={consultaData.informacion_laboratorio[rowIndex][colIndex]}
                                                            onChange={(e) => handleLabDataChange(e, rowIndex, colIndex)}
                                                        />
                                                    </td>
@@ -270,20 +316,29 @@ const ConsultasList = () => {
                     </div>
                 </div>
             )}
-            <ul>
-                {consultas.map(consulta => (
-                    <li key={consulta._id.$oid} className="consulta-card">
-                        <p>Cedula: {consulta.paciente_id}</p>
-                        <p>Fecha y Hora: {new Date(consulta.fecha_hora).toLocaleString()}</p>
-                        <p>Motivo de consulta: {consulta.motivo_consulta}</p>
-                        <p>Síntomas: {consulta.sintomas}</p>
-                        <p>Diagnóstico: {consulta.diagnostico}</p>
-                        <p>Tratamiento: {consulta.tratamiento}</p>
-                        <p>Información del Laboratorio: {consulta.informacion_laboratorio}</p> {/* Mostrar la información del laboratorio */}
-                        <hr />
-                    </li>
-                ))}
-            </ul>
+                <ul>
+                 {consultas.map(consulta => (
+                     <li key={consulta._id.$oid} className="consulta-card">
+                         <p>Cedula: {consulta.paciente_id}</p>
+                         <p>Fecha y Hora: {new Date(consulta.fecha_hora).toLocaleString()}</p>
+                         <p>Motivo de consulta: {consulta.motivo_consulta}</p>
+                         <p>Síntomas: {consulta.sintomas}</p>
+                         <p>Diagnóstico: {consulta.diagnostico}</p>
+                         <p>Tratamiento: {consulta.tratamiento}</p>
+                         {Array.isArray(consulta.informacion_laboratorio) && ( 
+                             <div>
+                                 <p>Información del Laboratorio:</p>
+                                 <ol className="laboratorio-info">
+                                     {consulta.informacion_laboratorio.map((fila, index) => (
+                                         <li key={index}> {fila.join(', ')}</li>
+                                     ))}
+                                 </ol>
+                             </div>
+                         )}
+                         <hr />
+                     </li>
+                 ))}
+                 </ul>               
         </div>
     );
 };
