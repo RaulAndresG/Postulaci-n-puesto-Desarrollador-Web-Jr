@@ -74,7 +74,7 @@ const ConsultasList = () => {
         }
     };
 
-   const handleGeneratePDF = () => {
+    const handleGeneratePDF = () => {
         const doc = new jsPDF();
         const lineHeight = 7;
         const pageHeight = doc.internal.pageSize.height;
@@ -87,20 +87,19 @@ const ConsultasList = () => {
                     doc.addPage();
                 }
                 let consultaY = 30;
-                doc.setDrawColor(0); // Color del borde
+                doc.setDrawColor(0);
                 doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
-                doc.setFillColor(192, 192, 192); // Color gris
-                doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                doc.setFillColor(192, 192, 192);
+                doc.rect(15, consultaY, pageWidth - 30, lineHeight, 'F');
                 doc.setFontSize(12);
-                doc.setTextColor(0, 0, 0); // Color negro
+                doc.setTextColor(0, 0, 0);
                 doc.setFont('helvetica', 'bold');
+    
                 doc.text('Cedula', 20, consultaY + lineHeight / 2);
                 consultaY += lineHeight;
-                doc.setFillColor(255, 255, 255); // Color blanco
-                doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                doc.setFillColor(255, 255, 255);
                 doc.setFont('helvetica', 'normal');
-                doc.text(consulta.paciente_id, 20, consultaY + lineHeight / 2);
-    
+                doc.text(consulta.paciente_id, 20, consultaY + lineHeight / 1.2);
     
                 let data = [
                     { label: 'Fecha y Hora:', value: new Date(consulta.fecha_hora).toLocaleString() },
@@ -109,71 +108,80 @@ const ConsultasList = () => {
                     { label: 'Diagnóstico:', value: consulta.diagnostico },
                     { label: 'Tratamiento:', value: consulta.tratamiento },
                 ];
-
-
-                data.forEach(item => {
-                    consultaY += lineHeight;
-                    doc.setFillColor(192, 192, 192); // Color gris
-                    doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
-                    doc.setFont('helvetica', 'bold');
-                    doc.text(item.label, 20, consultaY + lineHeight / 2);
-                });
     
-                // Contenido de las tablas secundarias
                 data.forEach(item => {
+                    // Draw label
+                    doc.setDrawColor(0);
+                    doc.text(item.label, 20, consultaY + lineHeight / 0.5);
                     consultaY += lineHeight;
-                    doc.setFillColor(255, 255, 255); // Color blanco
-                    doc.rect(10, consultaY, pageWidth - 20, lineHeight, 'F');
+                   
+
+    
+                    // Draw value
+                    doc.setDrawColor(0);
                     doc.setFont('helvetica', 'normal');
-                    doc.text(item.value, 20, consultaY + lineHeight / 2);
-                });
-    
+                    doc.text(item.value, 20, consultaY + lineHeight / 0.5);
+                    consultaY += lineHeight;
+                    doc.setTextColor(0, 0, 0);
+                    doc.setFont('helvetica', 'bold');
+                });    
 
 
 
-    
-              /*   let consultaY = pageHeight / 3; */
-    
+
                 doc.setLineWidth(0.5);
-                doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
-                doc.line(10, pageHeight / 6, pageWidth - 10, pageHeight / 6);
-                doc.line(10, pageHeight / 10, pageWidth - 10, pageHeight / 10);
-    
+                doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
+                doc.line(15, pageHeight / 10, pageWidth - 15, pageHeight / 10);
+                doc.line(15, pageHeight / 8, pageWidth - 15, pageHeight / 8);
+                    doc.line(15, pageHeight / 6.8, pageWidth - 15, pageHeight / 6.8);
+                    doc.line(15, pageHeight / 5.7, pageWidth - 15, pageHeight / 5.7);
+                    doc.line(15, pageHeight / 5, pageWidth - 15, pageHeight / 5);
+                    doc.line(15, pageHeight / 4.5, pageWidth - 15, pageHeight /4.5 )
+                    doc.line(15, pageHeight / 4, pageWidth - 15, pageHeight / 4);
+                    doc.line(15, pageHeight / 3.7, pageWidth - 15, pageHeight / 3.7);
+                    doc.line(15, pageHeight / 3.3, pageWidth - 15, pageHeight / 3.3);
+                    doc.line(15, pageHeight / 3.1, pageWidth - 15, pageHeight / 3.1);
+                    doc.line(15, pageHeight / 2.9, pageWidth - 15, pageHeight / 2.9);
+                    doc.line(15, pageHeight / 2.7, pageWidth - 15, pageHeight / 2.7);
+                    doc.line(15, pageHeight / 2.4, pageWidth - 15, pageHeight / 2.4);
                 doc.setFontSize(15);
                 doc.setFont('helvetica', 'bold');
-                doc.text(`Historia Clínica ${index + 1}`, pageWidth / 2, 30, { align: 'center' });
-    
-              /*   data.forEach((item, i) => {
-                    doc.setFont('helvetica', 'normal');
-                    const textWidth = doc.getStringUnitWidth(`${item.label} ${item.value}`) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-                    const xPosition = (pageWidth - textWidth) / 2;
-                    doc.text(`${item.label} ${item.value}`, xPosition, consultaY);
-                    consultaY += lineHeight;
-                });
- */
-                // Información del laboratorio
-                
+                doc.text(`Historia Clínica ${index + 1}`, pageWidth / 2, 28, { align: 'center' });
                 if (Array.isArray(consulta.informacion_laboratorio)) {
-                    let infoLabY = consultaY;
+                    let infoLabY = pageHeight - 170;
+                    const fontSize = 10; 
+                
+                    doc.setFontSize(fontSize); 
+                
                     doc.setFont('helvetica', 'bold');
                     doc.text('Información del Laboratorio:', 15, infoLabY);
                     infoLabY += lineHeight;
+                
                     consulta.informacion_laboratorio.forEach((fila, filaIndex) => {
                         const filaNumero = filaIndex + 1;
+                        let columnaX = 30; 
+                
+                        doc.setFont('helvetica', 'bold');
+                        doc.text(`${filaNumero}.`, 20, infoLabY + lineHeight / 2);
+                
+                        doc.setFont('helvetica', 'normal');
+                
                         fila.forEach((columna, columnIndex) => {
-                            doc.setFont('helvetica', 'normal');
-                            const textWidth = doc.getStringUnitWidth(`${filaNumero}.${columna}`) * doc.internal.getFontSize() / doc.internal.scaleFactor;
-                            const xPosition = 20 + (columnIndex * 30); // Ajusta según necesites
-                            doc.text(`${filaNumero}.${columna}`, xPosition, infoLabY, );
+                            doc.text(columna, columnaX, infoLabY + lineHeight / 2);
+                            columnaX += doc.getStringUnitWidth(columna) * fontSize / doc.internal.scaleFactor + 10; // Ajuste de posición
                         });
-                        infoLabY += lineHeight;
+                
+                        infoLabY += lineHeight; 
                     });
                 }
+                
+                
+                
     
                 const logoWidth = 40;
                 const logoHeight = (logo.width * logoWidth) / logo.height;
-                const logoX = pageWidth - logoWidth - 10;
-                const logoY = 247;
+                const logoX = pageWidth - logoWidth - 15;
+                const logoY = 242;
                 doc.addImage(logo, 'JPEG', logoX, logoY, logoWidth, logoHeight);
             });
     
@@ -186,6 +194,7 @@ const ConsultasList = () => {
     
         logo.src = logoImg;
     };
+    
     
     
     
@@ -299,8 +308,8 @@ const ConsultasList = () => {
                                                {[...Array(5)].map((_, colIndex) => (
                                                    <td key={colIndex}>
                                                        <input
+                                                           
                                                            className='input2 '
-                                                           type="text"
                                                            value={consultaData.informacion_laboratorio[rowIndex][colIndex]}
                                                            onChange={(e) => handleLabDataChange(e, rowIndex, colIndex)}
                                                        />

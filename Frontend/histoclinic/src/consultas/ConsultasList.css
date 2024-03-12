@@ -11,7 +11,7 @@
     font-weight: bold;
     font-family: monospace;
     margin-bottom: 20px;
-    color: #020f53b4;
+    color: rgba(0, 98, 151, 0.77);
 }
 
 .consulta-card {
@@ -37,7 +37,7 @@
     margin-top: 5px;
     padding: 10px 17px;
     font-size: 16px;
-    background-color: #0a35649c;
+    background-color: rgba(28, 141, 186, 0.616);
     color: #ffffff; 
     border: none;
     border-radius: 5px;
@@ -46,14 +46,14 @@
 }
 
 .crear-consulta:hover {
-    background-color: #0056b3; 
+    background-color: #0057b3ba; 
 }
 
 .generar-pdf{
     margin-top: 5px;
     padding: 10px 17px;
     font-size: 16px;
-    background-color: #0a35649c;
+    background-color: rgba(28, 141, 186, 0.616);
     color: #ffffff; 
     border: none;
     border-radius: 5px;
@@ -61,7 +61,7 @@
     transition: background-color 1s ease;
 }
 .generar-pdf:hover {
-    background-color: #0056b3; 
+    background-color: #0057b3c0; 
 }
 
 .consulta-card p {
@@ -69,12 +69,6 @@
     font-size: 15px;
     font-family: Arial, sans-serif;
 }
-/* .consulta-card p {
-    margin: 5px 0;
-    font-size: 12px; 
-    font-family: Arial, sans-serif;
-} */
-
 
 .consulta-card h3 {
     margin: 0;
@@ -88,10 +82,10 @@
     left: 0;
     width: 115rem;
     height: 56.5rem;
-    background-image: url('../img/imgconsultas.jpeg');  
+    background-image: url('../img/fondoconsulta.jpg');  
     background-size: cover;  
     background-position: center; 
-    /* background-repeat: no-repeat;  */
+    /*background-repeat: no-repeat; */
     opacity: 1; 
     z-index: -1; 
     filter: blur(9.1px); 
@@ -137,9 +131,6 @@ td:first-child {
     background-color: #cfcbcb88;
 }
 
-/* tr:nth-child(even) {
-    background-color: #cfcbcb88;
-} */
 
 tbody tr:hover {
     background-color: #cfcbcb1f;
@@ -159,14 +150,15 @@ tbody tr:hover {
 
 }
 .input2 {
-    width: 100%;
-    height: 100%;
+    width: 90px;
+    height: 37px;
     border: none;
     padding: 0;
     background-color: transparent; 
     outline: none;
     box-shadow: none; 
     caret-color: black; 
+    
 }
 
 .boton{
@@ -176,16 +168,80 @@ tbody tr:hover {
     border-radius: 15px;
     text-decoration: none;
     color: black;
-    text-align: center;
+    text-align: center; 
     
 }
-
-
 
 .laboratorio-info {
     font-size: 10px; 
 }
 
+/* const handleGeneratePDF = () => {
+    const doc = new jsPDF();
+    const lineHeight = 7;
+    const pageHeight = doc.internal.pageSize.height;
+    const pageWidth = doc.internal.pageSize.width;
+    const logo = new Image();
+
+    logo.onload = function() {
+        consultas.forEach((consulta, index) => {
+            if (index > 0) {
+                doc.addPage();
+            }
+            let consultaY = 30;
+            doc.setDrawColor(0);
+            doc.rect(5, 5, pageWidth - 10, pageHeight - 10);
+            doc.setFillColor(192, 192, 192);
+            doc.rect(15, consultaY, pageWidth - 30, lineHeight, 'F');
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.setFont('helvetica', 'bold');
+
+            let data = [
+                { label: 'Fecha y Hora:', value: new Date(consulta.fecha_hora).toLocaleString() },
+                { label: 'Motivo de Consulta:', value: consulta.motivo_consulta },
+                { label: 'Síntomas:', value: consulta.sintomas },
+                { label: 'Diagnóstico:', value: consulta.diagnostico },
+                { label: 'Tratamiento:', value: consulta.tratamiento },
+            ];
+
+            data.forEach(item => {
+                // Draw label
+                doc.text(item.label, 20, consultaY + lineHeight / 2);
+                consultaY += lineHeight;
+
+                // Draw value
+                doc.setFont('helvetica', 'normal');
+                doc.text(item.value, 20, consultaY + lineHeight / 2);
+                consultaY += lineHeight;
+            });
+
+            doc.setLineWidth(0.5);
+            doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
+            doc.line(15, pageHeight / 8, pageWidth - 15, pageHeight / 8);
+            doc.line(15, pageHeight / 10, pageWidth - 15, pageHeight / 10);
+            doc.line(15, pageHeight / 6.8, pageWidth - 15, pageHeight / 6.8);
+
+            doc.setFontSize(15);
+            doc.setFont('helvetica', 'bold');
+            doc.text(`Historia Clínica ${index + 1}`, pageWidth / 2, 30, { align: 'center' });
+
+            const logoWidth = 40;
+            const logoHeight = (logo.width * logoWidth) / logo.height;
+            const logoX = pageWidth - logoWidth - 15;
+            const logoY = 242;
+            doc.addImage(logo, 'JPEG', logoX, logoY, logoWidth, logoHeight);
+        });
+
+        doc.save('historias_clinicas.pdf');
+    };
+
+    logo.onerror = function() {
+        console.error('Error al cargar la imagen del logo.');
+    };
+
+    logo.src = logoImg;
+}; */
 
 
 

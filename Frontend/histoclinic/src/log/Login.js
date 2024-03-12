@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom'; // Importa Redirect para la redirección
+import { Redirect } from 'react-router-dom'; 
 import './Login.css';
-import imglogo from '../img/imglogo-removebg-preview.png';
+import imglogo from '../img/imglogo-removebg-preview-Photoroom.png-Photoroom-removebg-preview.png';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [loggedIn, setLoggedIn] = useState(false); // Estado para controlar la redirección
+    const [loggedIn, setLoggedIn] = useState(false); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,13 +24,13 @@ const Login = () => {
 
         if (response.ok) {
             console.log('Login successful');
-            setLoggedIn(true); // Establece loggedIn en true después de un inicio de sesión exitoso
+            setLoggedIn(true); 
         } else {
             setError(data.message);
         }
     };
 
-    // Si loggedIn es true, redirige a la página de consultas
+    
     if (loggedIn) {
         return <Redirect to="/consultas" />;
     }
